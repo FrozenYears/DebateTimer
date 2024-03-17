@@ -80,13 +80,13 @@
 						</div>
 						<div class="controlPanel" style="margin: auto;">
 							<!-- 总控 -->
-							<button class="ui primary icon button" id="exchange" onclick="exchange()"><i
+							<button class="ui primary icon button" id="exchange" onclick="exchange()" title="切换阶段"><i
 									class="exchange icon"></i></button>
-							<button class="ui red icon button" id="reset" onclick="reset()"><i
+							<button class="ui red icon button" id="reset" onclick="reset()" title="重置"><i
 									class="undo icon"></i></button>
-							<button class="ui icon button" id="settings" onclick="$('.ui.setting').modal('show');"><i
+							<button class="ui icon button" id="settings" onclick="$('.ui.setting').modal('show');" title="设置"><i
 									class="cog icon"></i></button>
-							<button class="ui teal icon button" id="readme" onclick="$('.ui.readme').modal('show');"><i
+							<button class="ui teal icon button" id="readme" onclick="$('.ui.readme').modal('show');" title="使用说明"><i
 									class="question circle icon"></i></button>
 						</div>
 					</div>
@@ -208,7 +208,7 @@
 					<div class="column">
 						<div style="width: 100%;">
 							<ul class="ui list">
-								<li>辩论分为正反双方，双方面板各有一计时器，有分别的「开始计时」、「暂停计时」、「快进」按钮进行控制
+								<li>辩论分为正反双方，双方面板各有一计时器，由各自的「开始计时」、「暂停计时」、「快进」按钮进行控制
 									<ul>
 										<li>双方计时器不会同时进行</li>
 									</ul>
@@ -226,7 +226,7 @@
 							<ul class="ui list">
 								<li>环节信息
 									<ul>
-										<li>「第一回合」："正方立论", "反方质询", "反方立论", "正方质询"  "正方立论", "反方质询", "反方立论", "正方质询"  "正方立论", "反方质询", "反方立论", "正方质询"</li>
+										<li>「第一回合」："正方立论" "反方质询" "反方立论" "正方质询" "正方立论" "反方质询" "反方立论" "正方质询" "正方立论" "反方立论"</li>
 										<li>「第二回合」："自由辩论"</li>
 										<li>「第三回合」："反方总结", "正方总结"</li>
 									</ul>
