@@ -14,7 +14,7 @@ var posDebater3 = "";
 var posDebater4 = "";
 var negDebater3 = "";
 var negDebater4 = "";
-var stages = ["赛前准备", "正方立论", "反方质询", "反方立论", "正方质询", "正方立论", "反方质询", "反方立论", "正方质询", "正方立论", "反方质询", "反方立论", "正方质询", "自由辩论", "反方总结", "正方总结", "赛后总结"]
+var stages = ["赛前准备", "正方立论", "反方质询", "反方立论", "正方质询", "正方立论", "反方质询", "反方立论", "正方质询", "正方立论", "反方立论", "自由辩论", "反方总结", "正方总结", "赛后总结"]
 var stageNow = 0; //第几个阶段
 //Start
 function refreshPos() {
@@ -126,6 +126,20 @@ function readInformation() {
 	document.getElementById("mainHeader").innerHTML = title;
     document.getElementById("nameListp").innerHTML = "正方一辩 " + posDebater1 + "<br>正方二辩 " + posDebater2 + "<br>正方三辩 " + posDebater3 + "<br>正方四辩 " + posDebater4;
     document.getElementById("nameListn").innerHTML = negDebater1 + " 反方一辩<br>" + negDebater2 + " 反方二辩<br>" + negDebater3 + " 反方三辩<br>" + negDebater4 + " 反方四辩";
+}
+//更换背景图片
+function setBackground() {
+    const API = "https://api.whitrayhb.top:19960/BingImage.php";
+    let body = document.getElementById("body");
+    let input = document.getElementById("bgSetting").value;
+    if (/#[\da-f]{6}/.test(input)) {
+        body.style.backgroundImage = "url()";
+        body.style.backgroundColor = input;
+    }
+    else {
+        body.style.backgroundImage = "url("+input+")";
+        body.style.backgroundColor = "";
+    }
 }
 //绑定键盘
 //正方 A S D
