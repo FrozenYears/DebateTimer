@@ -43,6 +43,7 @@ header{
     border-radius: 8px;
     border-width: 4px;
     font-family: Title;
+	font-weight: lighter;
     background-color: rgba(221, 221, 221, 0.7);
 }
 

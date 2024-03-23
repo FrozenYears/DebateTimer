@@ -2,6 +2,8 @@ const timesup = new Audio("./static/timeup.mp3");
 const minleft = new Audio("./static/1min.mp3");
 var tPos = 0;
 var tNeg = 0;
+var posTimeGoing = "";
+var negTimeGoing = "";
 var side = "";
 var title = "辩论计时器";
 let posloop = null;
@@ -14,10 +16,11 @@ var posDebater3 = "";
 var posDebater4 = "";
 var negDebater3 = "";
 var negDebater4 = "";
-var stages = ["赛前准备", "正方立论", "反方质询", "反方立论", "正方质询", "正方立论", "反方质询", "反方立论", "正方质询", "正方立论", "反方立论", "自由辩论", "反方总结", "正方总结", "赛后总结"]
+var stages = ["赛前准备", "正方立论", "反方质询", "正方回答", "反方立论", "正方质询", "反方回答", "正方立论", "反方质询", "正方回答", "反方立论", "正方质询", "反方回答", "正方立论", "反方立论", "自由辩论", "反方总结", "正方总结", "赛后总结"]
 var stageNow = 0; //第几个阶段
 //Start
 function refreshPos() {
+	posTimeGoing = true;
 	stopNeg(); //暂停反方计时器
 	console.info("Positive Loop");
 	document.getElementById('startPos').removeAttribute('onclick'); //避免连点加速
@@ -35,6 +38,7 @@ function refreshPos() {
 	},10);
 }
 function refreshNeg() {
+	negTimeGoing = true;
 	stopPos(); //暂停反方计时器
 	console.info("Negative Loop");
 	document.getElementById('startNeg').removeAttribute('onclick'); //避免连点加速
@@ -53,10 +57,12 @@ function refreshNeg() {
 }
 //Pause
 function stopPos() {
+	posTimeGoing = false;
 	clearInterval(posloop);
 	document.getElementById('startPos').setAttribute('onclick', "refreshPos()");
 }
 function stopNeg() {
+	negTimeGoing = false;
 	clearInterval(negloop);
 	document.getElementById('startNeg').setAttribute('onclick', "refreshNeg()");
 }
@@ -77,6 +83,10 @@ function skipNeg() {
 function exchange() {
 	//目前只有切换到下一阶段 浪子回不了头
 	if (stageNow < (stages.length - 1)) { stageNow++; }
+	document.getElementById("stage").innerHTML = "当前环节：" + stages[stageNow];
+}
+function exchangeBack() {
+	if (stageNow > 0) { stageNow--; }
 	document.getElementById("stage").innerHTML = "当前环节：" + stages[stageNow];
 }
 //Reset
@@ -180,6 +190,18 @@ $(document).keydown(function (event) {
         document.getElementById("exchange").click();
     }
 });
+//切换至下一阶段 Right Arrow →
+$(document).keydown(function (event) {
+    if (event.keyCode == 39) {
+        document.getElementById("exchange").click();
+    }
+});
+//切换至上一阶段 Left Arrow ←
+$(document).keydown(function (event) {
+    if (event.keyCode == 37) {
+        exchangeBack();
+    }
+});
 //初始化 R
 $(document).keydown(function (event) {
     if (event.keyCode == 82) {
@@ -190,6 +212,12 @@ $(document).keydown(function (event) {
 $(document).keydown(function (event) {
     if (event.keyCode == 32) {
         document.getElementById("settings").click();
+    }
+});
+//打开使用说明 H
+$(document).keydown(function (event) {
+    if (event.keyCode == 72) {
+        document.getElementById("readme").click();
     }
 });
 //设置面板 确定 Enter
