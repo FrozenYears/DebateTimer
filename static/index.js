@@ -1,5 +1,12 @@
+//Pro Vs Con
+//Bugs:
+//1、（初步判断已解决）一顿操作后 通过Space Enter快捷键无法关闭面板
+//2、（初步判断已解决）一顿操作后 计时加速 无法通过控制台调试stopPos()暂停
+//初步判断是 Semantic-ui 或 readInformation() 的问题
+//Optimization:
+//1、快捷键特定起效
 const timesup = new Audio("./static/timeup.mp3");
-const minleft = new Audio("./static/1min.mp3");
+const minleft = new Audio("./static/30s.mp3");
 var tPos = 0;
 var tNeg = 0;
 var posTimeGoing = "";
@@ -39,7 +46,7 @@ function refreshPos() {
 }
 function refreshNeg() {
 	negTimeGoing = true;
-	stopPos(); //暂停反方计时器
+	stopPos(); //暂停正方计时器
 	console.info("Negative Loop");
 	document.getElementById('startNeg').removeAttribute('onclick'); //避免连点加速
 	negloop = setInterval(function(){
@@ -81,13 +88,14 @@ function skipNeg() {
 }
 //Exchange
 function exchange() {
-	//目前只有切换到下一阶段 浪子回不了头
 	if (stageNow < (stages.length - 1)) { stageNow++; }
 	document.getElementById("stage").innerHTML = "当前环节：" + stages[stageNow];
+	document.getElementById("next").innerHTML = "下一环节：" + stages[stageNow + 1];
 }
 function exchangeBack() {
 	if (stageNow > 0) { stageNow--; }
 	document.getElementById("stage").innerHTML = "当前环节：" + stages[stageNow];
+	document.getElementById("next").innerHTML = "下一环节：" + stages[stageNow + 1];
 }
 //Reset
 function reset() {
@@ -95,6 +103,7 @@ function reset() {
 	stageNow = 0;
 	document.getElementById("mainHeader").innerHTML = title;
 	document.getElementById("stage").innerHTML = "当前环节：" + stages[stageNow];
+	document.getElementById("next").innerHTML = "下一环节：" + stages[stageNow + 1];
     document.getElementById("nameListp").innerHTML = "正方一辩 " + posDebater1 + "<br>正方二辩 " + posDebater2 + "<br>正方三辩 " + posDebater3 + "<br>正方四辩 " + posDebater4;
     document.getElementById("nameListn").innerHTML = negDebater1 + " 反方一辩<br>" + negDebater2 + " 反方二辩<br>" + negDebater3 + " 反方三辩<br>" + negDebater4 + " 反方四辩";
 	//时间
@@ -115,16 +124,25 @@ function readInformation() {
 	var m = Number(document.getElementById('minute').value);
 	var n = Number(document.getElementById('second').value);
 	if (m >= 0 && m <= 60 && n >= 0 && n <= 60 && m + n != 0 && m % 1 == 0 && n % 1 == 0 && !(m == 60 && n > 0)) {
-		tPos = m * 60000 + n * 1000; // + 1000
+		tPos = m * 60000 + n * 1000;
 		tNeg = m * 60000 + n * 1000;
 		document.getElementById('startPos').setAttribute('onclick', "refreshPos()");
 		document.getElementById('startNeg').setAttribute('onclick', "refreshNeg()");
 		document.getElementById('clockp').innerHTML = String((tPos%6000000)/600000 | 0) + String((tPos%600000)/60000 | 0) + ":" + String((tPos%60000)/10000 | 0) + String((tPos%10000)/1000 | 0);
 		document.getElementById('clockn').innerHTML = String((tNeg%6000000)/600000 | 0) + String((tNeg%600000)/60000 | 0) + ":" + String((tNeg%60000)/10000 | 0) + String((tNeg%10000)/1000 | 0);
+		stopPos();
+		stopNeg();
+
 	} else {
-		alert('请输入范围为0~60的整数 最大计时60分钟');
+		if (m != 0 || n != 0) {
+			alert('请输入范围为0~60的整数 最大计时60分钟');
+		}
 	}
-	title = document.getElementById("title").value;
+	if (document.getElementById("title").value == "") {
+		title = "辩论计时器";
+	} else {
+		title = document.getElementById("title").value;
+	}
     posDebater1 = document.getElementById("pos1").value;
     posDebater2 = document.getElementById("pos2").value;
 	posDebater3 = document.getElementById("pos3").value;
@@ -136,6 +154,7 @@ function readInformation() {
 	document.getElementById("mainHeader").innerHTML = title;
     document.getElementById("nameListp").innerHTML = "正方一辩 " + posDebater1 + "<br>正方二辩 " + posDebater2 + "<br>正方三辩 " + posDebater3 + "<br>正方四辩 " + posDebater4;
     document.getElementById("nameListn").innerHTML = negDebater1 + " 反方一辩<br>" + negDebater2 + " 反方二辩<br>" + negDebater3 + " 反方三辩<br>" + negDebater4 + " 反方四辩";
+	$('.ui.setting').modal('hide');
 }
 //更换背景图片
 function setBackground() {
