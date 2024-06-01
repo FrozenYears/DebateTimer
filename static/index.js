@@ -1,10 +1,4 @@
 //Pro Vs Con
-//Bugs:
-//1、（初步判断已解决）一顿操作后 通过Space Enter快捷键无法关闭面板
-//2、（初步判断已解决）一顿操作后 计时加速 无法通过控制台调试stopPos()暂停
-//初步判断是 Semantic-ui 或 readInformation() 的问题
-//Optimization:
-//1、快捷键特定起效
 const timesup = new Audio("./static/timeup.mp3");
 const minleft = new Audio("./static/30s.mp3");
 var tPos = 0;
@@ -90,7 +84,11 @@ function skipNeg() {
 function exchange() {
 	if (stageNow < (stages.length - 1)) { stageNow++; }
 	document.getElementById("stage").innerHTML = "当前环节：" + stages[stageNow];
-	document.getElementById("next").innerHTML = "下一环节：" + stages[stageNow + 1];
+	if (stageNow == stages.length - 1) {
+		document.getElementById("next").innerHTML = "下一环节：无";
+	} else if (stageNow < (stages.length - 1)) {
+		document.getElementById("next").innerHTML = "下一环节：" + stages[stageNow + 1];
+	}
 }
 function exchangeBack() {
 	if (stageNow > 0) { stageNow--; }
@@ -158,7 +156,7 @@ function readInformation() {
 }
 //更换背景图片
 function setBackground() {
-    const API = "https://api.whitrayhb.top:19960/BingImage.php";
+    const API = "https://api.ooopn.com/image/bing/api.php";	//https://api.whitrayhb.top:19960/BingImage.php
     let body = document.getElementById("body");
     let input = document.getElementById("bgSetting").value;
     if (/#[\da-f]{6}/.test(input)) {
@@ -170,78 +168,57 @@ function setBackground() {
         body.style.backgroundColor = "";
     }
 }
-//绑定键盘
-//正方 A S D
-$(document).keydown(function (event) {
-    if (event.keyCode == 65) {
-        document.getElementById("startPos").click();
-    }
-});
-$(document).keydown(function (event) {
-    if (event.keyCode == 83) {
-        document.getElementById("pausePos").click();
-    }
-});
-$(document).keydown(function (event) {
-    if (event.keyCode == 68) {
-        document.getElementById("skipPos").click();
-    }
-});
-//反方 J K L
-$(document).keydown(function (event) {
-    if (event.keyCode == 74) {
-        document.getElementById("startNeg").click();
-    }
-});
-$(document).keydown(function (event) {
-    if (event.keyCode == 75) {
-        document.getElementById("pauseNeg").click();
-    }
-});
-$(document).keydown(function (event) {
-    if (event.keyCode == 76) {
-        document.getElementById("skipNeg").click();
-    }
-});
-//切换阶段 E
-$(document).keydown(function (event) {
-    if (event.keyCode == 69) {
-        document.getElementById("exchange").click();
-    }
-});
-//切换至下一阶段 Right Arrow →
-$(document).keydown(function (event) {
-    if (event.keyCode == 39) {
-        document.getElementById("exchange").click();
-    }
-});
-//切换至上一阶段 Left Arrow ←
-$(document).keydown(function (event) {
-    if (event.keyCode == 37) {
-        exchangeBack();
-    }
-});
-//初始化 R
-$(document).keydown(function (event) {
-    if (event.keyCode == 82) {
-        document.getElementById("reset").click();
-    }
-});
-//打开设置面板 Spacebar
-$(document).keydown(function (event) {
-    if (event.keyCode == 32) {
-        document.getElementById("settings").click();
-    }
-});
-//打开使用说明 H
-$(document).keydown(function (event) {
-    if (event.keyCode == 72) {
-        document.getElementById("readme").click();
-    }
-});
-//设置面板 确定 Enter
-$(document).keydown(function (event) {
-    if (event.keyCode == 13) {
-        document.getElementById("yes").click();
-    }
-});
+// 绑定键盘事件 (GPT-4o太强辣
+function bindKeyEvents() {
+    $(document).keydown(function (event) {
+        if ($('.ui.setting.modal').is(':visible')) {
+            // 设置面板打开时的快捷键
+            if (event.keyCode == 13) { // Enter
+                document.getElementById("yes").click();
+            }
+        } else {
+            // 设置面板关闭时的快捷键
+            switch (event.keyCode) {
+                case 65: // A
+                    document.getElementById("startPos").click();
+                    break;
+                case 83: // S
+                    document.getElementById("pausePos").click();
+                    break;
+                case 68: // D
+                    document.getElementById("skipPos").click();
+                    break;
+                case 74: // J
+                    document.getElementById("startNeg").click();
+                    break;
+                case 75: // K
+                    document.getElementById("pauseNeg").click();
+                    break;
+                case 76: // L
+                    document.getElementById("skipNeg").click();
+                    break;
+                case 69: // E
+                    document.getElementById("exchange").click();
+                    break;
+                case 39: // Right Arrow
+                    document.getElementById("exchange").click();
+                    break;
+                case 37: // Left Arrow
+                    exchangeBack();
+                    break;
+                case 82: // R
+                    document.getElementById("reset").click();
+                    break;
+                case 32: // Spacebar
+                    document.getElementById("settings").click();
+                    break;
+                case 72: // H
+                    document.getElementById("readme").click();
+                    break;
+            }
+        }
+    });
+}
+
+// 初始化绑定键盘事件
+bindKeyEvents();
